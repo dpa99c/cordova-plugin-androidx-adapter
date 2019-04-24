@@ -46,7 +46,7 @@ function run() {
         for(var filePath of files){
             var fileContents = fs.readFileSync(filePath).toString();
             for (var oldName in classMappings){
-                fileContents = fileContents.replace(oldName, classMappings[oldName]);
+                fileContents = fileContents.replace(new RegExp(oldName, 'g'), classMappings[oldName]);
             }
             fs.writeFileSync(filePath, fileContents, 'utf8');
         }
