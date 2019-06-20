@@ -2,14 +2,14 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="cordova-plugin-androidx-adapter"
-        version="1.0.1">
+        version="1.0.2">
 
     <name>cordova-plugin-androidx-adapter</name>
     <description>Cordova/Phonegap plugin to migrate any code which references the legacy Android Support Library to the new AndroidX mappings in a Cordova Android platform project.</description>
     <author>Dave Alden</author>
     
     <engines>
-      <engine name="cordova" version=">=9.0.0" />
+      <engine name="cordova" version=">=8.0.0" />
         <engine name="cordova-android" version=">=8.0.0" />
     </engines>
 
