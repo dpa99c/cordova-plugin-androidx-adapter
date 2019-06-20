@@ -7,9 +7,17 @@ This enables a Cordova project for which AndroidX has been enabled (e.g. using [
 
 The plugin uses a hook script to replace any legacy Support Library Gradle artifact references in the `build.gradle` with the new [artifact mappings](https://developer.android.com/jetpack/androidx/migrate#artifact_mappings) and any legacy Support Library package name references in the Java source code with the new [class mappings](https://developer.android.com/jetpack/androidx/migrate#class_mappings).
 
+<!-- DONATE -->
+[![donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG_global.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZRD3W47HQ3EMJ)
+
+I dedicate a considerable amount of my free time to developing and maintaining this Cordova plugin, along with my other Open Source software.
+To help ensure this plugin is kept updated, new features are added and bugfixes are implemented quickly, please donate a couple of dollars (or a little more if you can stretch) as this will help me to afford to dedicate time to its maintenance. Please consider donating if you're using this plugin in an app that makes you money, if you're being paid to make the app, if you're asking for new features or priority bug fixes.
+<!-- END DONATE -->
+
+
 # Requirements
 
-This plugin requires a minimum of [`cordova@9`](https://github.com/apache/cordova-cli) and [`cordova-android@8`](https://github.com/apache/cordova-android).
+This plugin requires a minimum of [`cordova@8`](https://github.com/apache/cordova-cli) and [`cordova-android@8`](https://github.com/apache/cordova-android).
  
 # Installation
 
@@ -17,7 +25,7 @@ This plugin requires a minimum of [`cordova@9`](https://github.com/apache/cordov
     
 **IMPORTANT:** This plugin relies on a [Cordova hook script](https://cordova.apache.org/docs/en/latest/guide/appdev/hooks/) so will not work in Cloud Build environments such as Phonegap Build which do not support Cordova hook scripts. 
 
-**WARNING**: Do not install this plugin in a Cordova project in which AndroidX has not already been installed or the build will fail.
+**WARNING**: Do not install this plugin in a Cordova project in which AndroidX has not already been enabled or the build will fail.
     
 # Usage
 
