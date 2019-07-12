@@ -54,7 +54,10 @@ function run() {
 
     // Replace class/package names in source code
     recursiveDir(JAVA_SRC_PATH, [function(file, stats){
-        return !file.match(".java");
+        if(stats.isDirectory()){
+            return false;
+        }
+        return !file.match("\\.java");
     }], attempt(function(err, files){
         if(err) throw err;
 
