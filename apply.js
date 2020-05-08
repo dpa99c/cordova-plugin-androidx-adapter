@@ -1,10 +1,11 @@
 var PLUGIN_NAME = "cordova-plugin-androidx-adapter";
 var ARTIFACT_MAPPINGS_FILE = "artifact-mappings.json";
 var CLASS_MAPPINGS_FILE = "class-mappings.json";
-var JAVA_SRC_PATH = "./platforms/android/app/src/main/java";
+var SRC_PATH = "./platforms/android/app/src/main";
 var BUILD_GRADLE_PATH = "./platforms/android/app/build.gradle";
 var PROJECT_PROPERTIES_PATH = "./platforms/android/project.properties";
 var MANIFEST_PATH = "./platforms/android/app/src/main/AndroidManifest.xml";
+var TARGET_FILE_REGEX = /(\.java|\.xml)/;
 
 var deferral, fs, path, now, recursiveDir;
 
@@ -53,11 +54,11 @@ function run() {
     fs.writeFileSync(MANIFEST_PATH, androidManifest, 'utf8');
 
     // Replace class/package names in source code
-    recursiveDir(JAVA_SRC_PATH, [function(file, stats){
+    recursiveDir(SRC_PATH, [function(file, stats){
         if(stats.isDirectory()){
             return false;
         }
-        return !file.match("\\.java");
+        return !file.match(TARGET_FILE_REGEX);
     }], attempt(function(err, files){
         if(err) throw err;
 
@@ -68,7 +69,7 @@ function run() {
             }
             fs.writeFileSync(filePath, fileContents, 'utf8');
         }
-        log("Processed " + files.length + " Java source files in " + parseInt(now() - startTime) + "ms");
+        log("Processed " + files.length + " source files in " + parseInt(now() - startTime) + "ms");
         deferral.resolve();
     }));
 }
