@@ -37,10 +37,9 @@ function run() {
 
     // Replace artifacts in build.gradle, project.properties & AndroidManifest.xml
     for (var oldArtifactName in artifactMappings) {
-        var newArtifactName = artifactMappings[oldArtifactName],
-            artifactRegExpStr = sanitiseForRegExp(oldArtifactName) + ':[0-9.+]+';
-        buildGradle = buildGradle.replace(new RegExp(artifactRegExpStr, 'gm'), newArtifactName);
-        projectProperties = projectProperties.replace(new RegExp(artifactRegExpStr, 'gm'), newArtifactName);
+        var newArtifactName = artifactMappings[oldArtifactName];
+        buildGradle = replaceArtifact(buildGradle, oldArtifactName, newArtifactName);
+        projectProperties = replaceArtifact(projectProperties, oldArtifactName, newArtifactName);
     }
     fs.writeFileSync(BUILD_GRADLE_PATH, buildGradle, 'utf8');
     fs.writeFileSync(PROJECT_PROPERTIES_PATH, projectProperties, 'utf8');
@@ -49,7 +48,7 @@ function run() {
 
     // Replace class/package names in AndroidManifest.xml
     for (var oldClassName in classMappings){
-        androidManifest = androidManifest.replace(new RegExp(oldClassName, 'g'), classMappings[oldClassName]);
+        androidManifest = replaceClassName(androidManifest, oldClassName, classMappings[oldClassName]);
     }
     fs.writeFileSync(MANIFEST_PATH, androidManifest, 'utf8');
 
@@ -65,13 +64,22 @@ function run() {
         for(var filePath of files){
             var fileContents = fs.readFileSync(filePath).toString();
             for (var oldClassName in classMappings){
-                fileContents = fileContents.replace(new RegExp(oldClassName, 'g'), classMappings[oldClassName]);
+                fileContents = replaceClassName(fileContents, oldClassName, classMappings[oldClassName]);
             }
             fs.writeFileSync(filePath, fileContents, 'utf8');
         }
         log("Processed " + files.length + " source files in " + parseInt(perf_hooks.performance.now() - startTime) + "ms");
         deferral.resolve();
     }));
+}
+
+function replaceArtifact(target, oldName, newName){
+    return target.replace(new RegExp(sanitiseForRegExp(oldName) + ':[0-9.+]+', 'gm'), newName);
+}
+
+function replaceClassName(target, oldName, newName){
+    oldName = '(?:'+sanitiseForRegExp(oldName)+')([^.a-zA-Z0-9]+)';
+    return target.replace(new RegExp(oldName, 'g'), newName+'$1');
 }
 
 function sanitiseForRegExp(str) {
