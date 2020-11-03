@@ -78,7 +78,7 @@ function replaceArtifact(target, oldName, newName){
 }
 
 function replaceClassName(target, oldName, newName){
-    oldName = '(?:'+sanitiseForRegExp(oldName)+')([^.a-zA-Z0-9]+)';
+    oldName = '(?:'+sanitiseForRegExp(oldName)+')([^a-zA-Z0-9]+)';
     return target.replace(new RegExp(oldName, 'g'), newName+'$1');
 }
 
