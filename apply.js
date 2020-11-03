@@ -7,7 +7,7 @@ var PROJECT_PROPERTIES_PATH = "./platforms/android/project.properties";
 var MANIFEST_PATH = "./platforms/android/app/src/main/AndroidManifest.xml";
 var TARGET_FILE_REGEX = /(\.java|\.xml)/;
 
-var deferral, fs, path, now, recursiveDir;
+var deferral, fs, path, perf_hooks, recursiveDir;
 
 function log(message) {
     console.log(PLUGIN_NAME + ": " + message);
@@ -23,12 +23,12 @@ function run() {
         fs = require('fs');
         path = require('path');
         recursiveDir = require("recursive-readdir");
-        now = require("performance-now")
+        perf_hooks = require('perf_hooks');
     } catch (e) {
         throw("Failed to load dependencies: " + e.toString());
     }
 
-    var startTime = now();
+    var startTime = perf_hooks.performance.now();
 
     var artifactMappings = JSON.parse(fs.readFileSync(path.join(__dirname, '.', ARTIFACT_MAPPINGS_FILE)).toString()),
         buildGradle = fs.readFileSync(BUILD_GRADLE_PATH).toString(),
@@ -36,7 +36,7 @@ function run() {
         androidManifest = fs.readFileSync(MANIFEST_PATH).toString();
 
     // Replace artifacts in build.gradle, project.properties & AndroidManifest.xml
-    for(var oldArtifactName in artifactMappings){
+    for (var oldArtifactName in artifactMappings) {
         var newArtifactName = artifactMappings[oldArtifactName],
             artifactRegExpStr = sanitiseForRegExp(oldArtifactName) + ':[0-9.+]+';
         buildGradle = buildGradle.replace(new RegExp(artifactRegExpStr, 'gm'), newArtifactName);
@@ -69,7 +69,7 @@ function run() {
             }
             fs.writeFileSync(filePath, fileContents, 'utf8');
         }
-        log("Processed " + files.length + " source files in " + parseInt(now() - startTime) + "ms");
+        log("Processed " + files.length + " source files in " + parseInt(perf_hooks.performance.now() - startTime) + "ms");
         deferral.resolve();
     }));
 }
